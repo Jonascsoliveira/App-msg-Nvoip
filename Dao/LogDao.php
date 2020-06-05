@@ -13,7 +13,7 @@ class LogDao{
         $this->conexao = Conexao::getConexao();
     }
 
-    public function create(){
+    public function create($id_cliente, $acao, $dados){
 
         $dataAtual = new DateTime();
         $sql = "INSERT INTO `app-msg-nvoip`.`log`
@@ -27,10 +27,8 @@ class LogDao{
         $stmt->bindParam(':acao', $acao);
         $stmt->bindParam(':dados', $dados);
 
-        if ($stmt->execute()){
-            echo "Cliente cadastrado";
-        }else{
-            echo "Cliente não cadastrado, houve algum erro!";
+        if (!$stmt->execute()){
+            echo "erro ao cadastrar log, houve algum problema!";
         }
     }
 }

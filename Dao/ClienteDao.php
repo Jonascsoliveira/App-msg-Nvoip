@@ -94,7 +94,7 @@ class ClienteDao{
         $stmt = $this->conexao->query($sql);
         $clientes = $stmt->fetchAll(PDO::FETCH_CLASS, '\App\Cliente');
 
-        return $leites;
+        return $clientes;
     }
 
     public function delete($id){
@@ -106,5 +106,38 @@ class ClienteDao{
     if (!$stmt->execute()):
         echo "Ocorreu um erro!";
     endif;
+    }
+
+    public function listByCpf($cpf){
+        $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` WHERE `cpf` LIKE `%`:cpf`%`;";
+
+        $stmt = $this->conexao->query($sql);
+        $stmt->bindParam(':cpf',$cpf);
+
+        $cliente = $stmt->fetchAll(PDO::FETCH_CLASS, '\App\Cliente');
+
+        return $cliente;
+    }
+
+    public function listByEmail($email){
+        $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` WHERE `email` LIKE `%`:email`%`;";
+
+        $stmt = $this->conexao->query($sql);
+        $stmt->bindParam(':email',$email);
+
+        $cliente = $stmt->fetchAll(PDO::FETCH_CLASS, '\App\Cliente');
+
+        return $cliente;
+    }
+
+    public function listByTelefone($telefone){
+        $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` WHERE `telefone` LIKE `%`:telefone`%`;";
+
+        $stmt = $this->conexao->query($sql);
+        $stmt->bindParam(':telefone',$telefone);
+
+        $cliente = $stmt->fetchAll(PDO::FETCH_CLASS, '\App\Cliente');
+
+        return $cliente;
     }
 }
