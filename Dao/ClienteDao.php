@@ -87,7 +87,7 @@ class ClienteDao{
         $stmt->bindParam(':id',        $id);
 
         if ($stmt->execute()){
-            header('location:index.php');
+            echo "Alterado com sucesso";
         }else{
             echo "Cliente não cadastrado, houve algum erro!";
         }
@@ -106,7 +106,7 @@ class ClienteDao{
         $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` WHERE `id`= :id;";
 
         $stmt = $this->conexao->prepare($sql);
-        $stmt->bindParam(':id',(int)$id);
+        $stmt->bindParam(':id', $id);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, '\App\Cliente');
 
@@ -128,10 +128,11 @@ class ClienteDao{
     }
 
     public function listByCpf($cpf){
-        $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` WHERE `cpf` LIKE `%`:cpf`%`;";
+        $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` WHERE `cpf` LIKE :cpf;";
 
-        $stmt = $this->conexao->query($sql);
-        $stmt->bindParam(':cpf',$cpf);
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bindValue(':cpf',"%{$cpf}%");
+        $stmt->execute();
 
         $cliente = $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, '\App\Cliente');
 
@@ -139,10 +140,11 @@ class ClienteDao{
     }
 
     public function listByEmail($email){
-        $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` WHERE `email` LIKE `%`:email`%`;";
+        $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` WHERE `email` LIKE :email;";
 
-        $stmt = $this->conexao->query($sql);
-        $stmt->bindParam(':email',$email);
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bindValue(':email',"%{$email}%");
+        $stmt->execute();
 
         $cliente = $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, '\App\Cliente');
 
@@ -150,10 +152,11 @@ class ClienteDao{
     }
 
     public function listByTelefone($telefone){
-        $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` WHERE `telefone` LIKE `%`:telefone`%`;";
+        $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` WHERE `telefone` LIKE :telefone;";
 
-        $stmt = $this->conexao->query($sql);
-        $stmt->bindParam(':telefone',$telefone);
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bindValue(':telefone',"%{$telefone}%");
+        $stmt->execute();
 
         $cliente = $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, '\App\Cliente');
 

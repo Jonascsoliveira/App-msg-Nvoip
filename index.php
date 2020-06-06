@@ -4,6 +4,9 @@ require_once "autoload.php";
 use \Dao\ClienteDao;
 use \App\Cliente;
 
+$filtroCpf = filter_input(INPUT_POST, "filtroCpf");
+$filtroEmail = filter_input(INPUT_POST, "filtroEmail");
+$filtroTelefone = filter_input(INPUT_POST, "filtroTelefone");
 ?>
 
 <!DOCTYPE html>
@@ -26,19 +29,21 @@ use \App\Cliente;
                         <a class="nav-link" href="cadastro.php">Cadastro</a>
                     </li>
                 </ul>
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="CPF" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <form class="form-inline" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+                    <input class="form-control mr-sm-2" type="search" name="filtroCpf" placeholder="CPF" aria-label="Search">
+                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Fitrar</button>
                 </form>
                 &nbsp;
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Email" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                &nbsp;
+                <form class="form-inline" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+                    <input class="form-control mr-sm-2" type="search" name="filtroEmail" placeholder="Email" aria-label="Search">
+                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Fitrar</button>
                 </form>
                 &nbsp;
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Telefone" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                &nbsp;
+                <form class="form-inline" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+                    <input class="form-control mr-sm-2" type="search" name="filtroTelefone" placeholder="Telefone" aria-label="Search">
+                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Fitrar</button>
                 </form>
             </div>
         </nav>
@@ -46,9 +51,21 @@ use \App\Cliente;
         <div>
             <?php 
                 $daoCliente = new ClienteDao();
-                $clientes = $daoCliente->listAll();
-            ?>
-            <?php foreach($clientes as $cliente): ?>
+                
+                if(isset($filtroEmail)){
+                    $clientes = $daoCliente->listByEmail($filtroEmail);
+                }
+                elseif(isset($filtroTelefone)){
+                    $clientes = $daoCliente->listByTelefone($filtroTelefone);
+                }
+                elseif(isset($filtroCpf)){
+                    $clientes = $daoCliente->listByCpf($filtroCpf);
+                }
+                else{
+                    $clientes = $daoCliente->listAll();
+                }
+                
+            foreach($clientes as $cliente): ?>
                 <div class="mb-3 col-md-12">
                     <div class="row">
                         <div class="col-md-2 border border-top-0">Nome: <?=$cliente->getNome()?></div>
@@ -71,8 +88,8 @@ use \App\Cliente;
                     </div>
                 </div>
             <?php endforeach; ?>
-        </div>
-        <?php
+
+            <?php
             if(isset($_GET['excluir']))
                 $daoCliente->delete($_GET['excluir']);
         ?>
