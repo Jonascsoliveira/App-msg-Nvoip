@@ -17,7 +17,7 @@ class Cliente{
     private $pais;
     private $telefone;
 
-    public function __construct($id , $nome, $sobrenome, $email, $cpf, $cep, $endereco, $bairro, $cidade, $estado, $pais, $telefone)
+    public function __construct($id=0 , $nome = '', $sobrenome = '', $email = '', $cpf = '', $cep = '', $endereco = '', $bairro = '', $cidade = '', $estado = '', $pais = '', $telefone = '')
     {
         $this->setId($id);
         $this->setNome($nome);

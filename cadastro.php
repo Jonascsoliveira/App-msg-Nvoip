@@ -2,6 +2,12 @@
 require_once "autoload.php";
 
 use \Dao\ClienteDao;
+use \App\Cliente;
+
+if(isset($_GET['alterar'])):
+    $clienteDao = new ClienteDao();
+    $cliente= $clienteDao->getById($_GET['alterar']);
+endif;
 
 ?>
 <!DOCTYPE html>
@@ -86,15 +92,22 @@ use \Dao\ClienteDao;
                 value="<?=isset($cliente)?'Alterar':'Cadastrar'?>">
         </div>
     </form>
+    
 <?php
-    if($_POST['enviado']):
-        $daoCliente = new ClienteDao();
+    $daoCliente = new ClienteDao();
+    if(isset($_POST['enviado']) && $_POST['enviado'] == 'Cadastrar'):
         
         $daoCliente->create($_POST['nome'], $_POST['sobrenome'], $_POST['email'], 
             $_POST['cpf'],  $_POST['cep'],  $_POST['endereco'], 
             $_POST['bairro'], $_POST['cidade'], $_POST['estado'],
             $_POST['pais'], $_POST['telefone']);
-            var_dump($daoCliente);
+    endif;
+    if(isset($_POST['enviado']) && $_POST['enviado'] == 'Alterar'):
+        
+        $daoCliente->edit($_POST['nome'], $_POST['sobrenome'], $_POST['email'], 
+            $_POST['cpf'],  $_POST['cep'],  $_POST['endereco'], 
+            $_POST['bairro'], $_POST['cidade'], $_POST['estado'],
+            $_POST['pais'], $_POST['telefone'], $_POST['id']);
     endif;
 ?>
 </body>

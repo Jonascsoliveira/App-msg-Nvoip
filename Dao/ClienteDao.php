@@ -3,7 +3,7 @@
 namespace Dao;
 
 use \App\Conexao;
-use \App\Cliente;
+//use \App\Cliente;
 use PDO;
 
 class ClienteDao{
@@ -14,11 +14,11 @@ class ClienteDao{
         $this->conexao = Conexao::getConexao();
     }
     
-    public function create($nome, $sobrenome, $email, $cpf, $cep, $endereco, $bairro, $estado, $pais, $telefone){
+    public function create($nome, $sobrenome, $email, $cpf, $cep, $endereco, $bairro, $cidade, $estado, $pais, $telefone){
         
         $sql = "INSERT INTO `app-msg-nvoip`.`cliente`
-        (`nome`, `sobrenome`, `email`, `cpf`, `cep`, `endereco`, `bairro`, `estado`, `pais`, `telefone`)
-        VALUES(:nome, :sobrenome, :email, :cpf, :cep, :endereco, :bairro, :estado, :pais, :telefone);";
+        (`nome`, `sobrenome`, `email`, `cpf`, `cep`, `endereco`, `bairro`, `cidade`, `estado`, `pais`, `telefone`)
+        VALUES(:nome, :sobrenome, :email, :cpf, :cep, :endereco, :bairro, :cidade, :estado, :pais, :telefone);";
 
         $nomeTrimed      = trim($nome);
         $sobrenomeTrimed = trim($sobrenome);
@@ -27,12 +27,13 @@ class ClienteDao{
         $cepTrimed       = trim($cep);
         $enderecoTrimed  = trim($endereco);
         $bairroTrimed    = trim($bairro);
+        $cidadeTrimed    = trim($cidade);
         $estadoTrimed    = trim($estado);
         $paisTrimed      = trim($pais);
         $telefoneTrimed  = trim($telefone);
 
         $stmt = $this->conexao->prepare($sql);
-        
+
         $stmt->bindParam(':nome',      $nomeTrimed);
         $stmt->bindParam(':sobrenome', $sobrenomeTrimed);
         $stmt->bindParam(':email',     $emailTrimed);
@@ -40,6 +41,7 @@ class ClienteDao{
         $stmt->bindParam(':cep',       $cepTrimed);
         $stmt->bindParam(':endereco',  $enderecoTrimed);
         $stmt->bindParam(':bairro',    $bairroTrimed);
+        $stmt->bindParam(':cidade',    $cidadeTrimed);
         $stmt->bindParam(':estado',    $estadoTrimed);
         $stmt->bindParam(':pais',      $paisTrimed);
         $stmt->bindParam(':telefone',  $telefoneTrimed);
@@ -51,10 +53,10 @@ class ClienteDao{
         }
     }
 
-    public function edit($id, $nome, $sobrenome, $email, $cpf, $cep, $endereco, $bairro, $estado, $pais, $telefone){
+    public function edit($id, $nome, $sobrenome, $email, $cpf, $cep, $endereco, $bairro, $cidade, $estado, $pais, $telefone){
         $sql = "UPDATE `app-msg-nvoip`.`cliente`
         SET `nome`= :nome, `sobrenome`= :sobrenome, `email`=:email, `cpf`=:cpf, `cep`=:cep, 
-        `endereco`=:endereco, `bairro`=:bairro, `estado`=:estado, `pais`=:pais, `telefone`=:telefone
+        `endereco`=:endereco, `bairro`=:bairro, `cidade`=:cidade, `estado`=:estado, `pais`=:pais, `telefone`=:telefone
         WHERE `id`=:id;";
 
         $nomeTrimed      = trim($nome);
@@ -64,6 +66,7 @@ class ClienteDao{
         $cepTrimed       = trim($cep);
         $enderecoTrimed  = trim($endereco);
         $bairroTrimed    = trim($bairro);
+        $cidadeTrimed    = trim($cidade);
         $estadoTrimed    = trim($estado);
         $paisTrimed      = trim($pais);
         $telefoneTrimed  = trim($telefone);
@@ -77,13 +80,14 @@ class ClienteDao{
         $stmt->bindParam(':cep',       $cepTrimed);
         $stmt->bindParam(':endereco',  $enderecoTrimed);
         $stmt->bindParam(':bairro',    $bairroTrimed);
+        $stmt->bindParam(':cidade',    $cidadeTrimed);
         $stmt->bindParam(':estado',    $estadoTrimed);
         $stmt->bindParam(':pais',      $paisTrimed);
         $stmt->bindParam(':telefone',  $telefoneTrimed);
         $stmt->bindParam(':id',        $id);
 
         if ($stmt->execute()){
-            echo "Cliente cadastrado";
+            header('location:index.php');
         }else{
             echo "Cliente não cadastrado, houve algum erro!";
         }
@@ -93,9 +97,21 @@ class ClienteDao{
         $sql = "SELECT * FROM `app-msg-nvoip`.`cliente`;";
 
         $stmt = $this->conexao->query($sql);
-        $clientes = $stmt->fetchAll(PDO::FETCH_CLASS, '\App\Cliente');
+        $clientes = $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, '\App\Cliente');
 
         return $clientes;
+    }
+
+    public function getById($id){
+        $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` WHERE `id`= :id;";
+
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bindParam(':id',(int)$id);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, '\App\Cliente');
+
+        $cliente = $stmt->fetch();
+        return $cliente;
     }
 
     public function delete($id){
@@ -106,6 +122,8 @@ class ClienteDao{
 
     if (!$stmt->execute()):
         echo "Ocorreu um erro!";
+    else:
+        header('location:index.php');
     endif;
     }
 
@@ -115,7 +133,7 @@ class ClienteDao{
         $stmt = $this->conexao->query($sql);
         $stmt->bindParam(':cpf',$cpf);
 
-        $cliente = $stmt->fetchAll(PDO::FETCH_CLASS, '\App\Cliente');
+        $cliente = $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, '\App\Cliente');
 
         return $cliente;
     }
@@ -126,7 +144,7 @@ class ClienteDao{
         $stmt = $this->conexao->query($sql);
         $stmt->bindParam(':email',$email);
 
-        $cliente = $stmt->fetchAll(PDO::FETCH_CLASS, '\App\Cliente');
+        $cliente = $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, '\App\Cliente');
 
         return $cliente;
     }
@@ -137,7 +155,7 @@ class ClienteDao{
         $stmt = $this->conexao->query($sql);
         $stmt->bindParam(':telefone',$telefone);
 
-        $cliente = $stmt->fetchAll(PDO::FETCH_CLASS, '\App\Cliente');
+        $cliente = $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, '\App\Cliente');
 
         return $cliente;
     }
