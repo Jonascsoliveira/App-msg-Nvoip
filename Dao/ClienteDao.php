@@ -3,6 +3,7 @@
 namespace Dao;
 
 use \App\Conexao;
+use \App\Cliente;
 use PDO;
 
 class ClienteDao{
@@ -12,7 +13,7 @@ class ClienteDao{
     public function __construct(){
         $this->conexao = Conexao::getConexao();
     }
-
+    
     public function create($nome, $sobrenome, $email, $cpf, $cep, $endereco, $bairro, $estado, $pais, $telefone){
         
         $sql = "INSERT INTO `app-msg-nvoip`.`cliente`

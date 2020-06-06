@@ -12,7 +12,7 @@ class Conexao{
         try {
             self::$conexao = new \PDO($dsn,$user,$pass);
         } catch (\PDOException $exception) {
-            die('Ocorreu ume rro: '.$exception->getMessage());
+            die('Ocorreu um erro: '.$exception->getMessage());
         }
         
     }
