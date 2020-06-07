@@ -88,7 +88,12 @@ $filtroTelefone = filter_input(INPUT_POST, "filtroTelefone");
                         <div class="col-md-1 border border-top-0"><a href="index.php?excluir=<?=$cliente->getId()?>">Excluir</a></div>
                     </div>
                     <div class="row">
-                        <form action="" method="post"></form>
+                        <form action="apisms.php" method="post">
+                            <input type="text" name="msg" id="msg" placeholder="Digite sua mensagem. Atencao sem acentuacao!" required>
+                            <input type="hidden" name="telefone" value="<?=$cliente->getTelefone()?>">
+                            <input type="hidden" name="id" value="<?=$cliente->getId()?>">
+                            <input type="submit" value="Enviar SMS">
+                        </form>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -99,26 +104,3 @@ $filtroTelefone = filter_input(INPUT_POST, "filtroTelefone");
         ?>
     </body>
 </html>
-<?php
-/*$ch = curl_init();
-
-curl_setopt($ch, CURLOPT_URL, "https://private-anon-6e1929fd4f-nvoip.apiary-proxy.com/v1/sms");
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-curl_setopt($ch, CURLOPT_HEADER, FALSE);
-
-curl_setopt($ch, CURLOPT_POST, TRUE);
-
-curl_setopt($ch, CURLOPT_POSTFIELDS, "{
-  \"celular\": \"988171165\",
-  \"msg\": \"Mensagem que será enviada\"
-}");
-
-curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-  "Content-Type: application/json",
-  "token_auth: 211718131b8d420b13943298bbfb09b71ddd1"
-));
-
-$response = curl_exec($ch);
-curl_close($ch);
-
-var_dump($response);*/
