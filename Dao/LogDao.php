@@ -12,9 +12,9 @@ class LogDao{
     public function __construct(){
         $this->conexao = Conexao::getConexao();
     }
-
+    /*Método para crição persistencia de logs*/
     public function create($id_cliente, $acao, $dados){
-
+        /*Variável para guardar o timestamp do momento da ação */
         $dataAtual = date('d/m/y H:i:s');
         $sql = "INSERT INTO `app-msg-nvoip`.`log`
         (`id_cliente`, `dataHora`, `acao`, `dados`)

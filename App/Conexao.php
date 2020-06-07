@@ -16,7 +16,7 @@ class Conexao{
         }
         
     }
-
+    
     public static function getConexao(): \PDO{
         if(!self::$conexao){
             self::criaConexao();

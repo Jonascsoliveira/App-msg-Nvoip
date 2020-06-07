@@ -2,7 +2,9 @@
 require_once "autoload.php";
 
 use \Dao\LogDao;
+/*Declarando variável com conteúdo da mensagem*/
 $texto = "Ola isso e um teste";
+/*Verificando se a requisição POST possui conteúdo*/
 if (isset($_POST)) {
     $numTelefoneCelular = $_POST['telefone'];
     $id = $_POST['id'];
@@ -28,11 +30,19 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 
 $response = curl_exec($ch);
 curl_close($ch);
-
+/*Após envio de mensagem é persistido no log que houve o envio*/
 $acao = "Envio de Voice SMS";
 $dados = "{$texto}";
 $log = new LogDao();
 $log->create($id, $acao, $dados);
 
 header("Location: index.php");
-}
+}else{
+/*Caso haja falha, é persistido no log que não houve o envio*/
+    $acao = "Falha no envio de Voice SMS";
+    $dados = "{$texto}";
+    $log = new LogDao();
+    $log->create($id, $acao, $dados);
+    echo "Mensagem não envida, tente novamente!";
+    var_dump($response);
+    }

@@ -3,17 +3,16 @@
 namespace Dao;
 
 use \App\Conexao;
-
 use PDO;
 
 class ClienteDao{
 
     private $conexao;
-
+    /*Construtor trás a conexão assim que é declarado*/
     public function __construct(){
         $this->conexao = Conexao::getConexao();
     }
-    
+    /*Método para cadastro de cliente */
     public function create($nome, $sobrenome, $email, $cpf, $cep, $endereco, $bairro, $cidade, $estado, $pais, $telefone){
         
         $sql = "INSERT INTO `app-msg-nvoip`.`cliente`
@@ -48,6 +47,7 @@ class ClienteDao{
 
         if ($stmt->execute()){
             echo "Cliente cadastrado";
+            /*Persistindo ação no log*/
             $ultimoID = $this->conexao->lastInsertId();
             $acao = "criação";
             $dados = "criação de novo usuário";
@@ -59,7 +59,7 @@ class ClienteDao{
             echo "Cliente não cadastrado, houve algum erro!";
         }
     }
-
+    /*Método para edição de cliente */
     public function edit($id, $nome, $sobrenome, $email, $cpf, $cep, $endereco, $bairro, $cidade, $estado, $pais, $telefone){
         $sql = "UPDATE `app-msg-nvoip`.`cliente`
         SET `nome`= :nome, `sobrenome`= :sobrenome, `email`=:email, `cpf`=:cpf, `cep`=:cep, 
@@ -95,6 +95,7 @@ class ClienteDao{
 
         if ($stmt->execute()){
             echo "Alterado com sucesso";
+            /*Persistindo ação no log */
             $acao = "Alteração";
             $dados = "Alteração de usuário";
             $log = new LogDao();            
@@ -104,7 +105,7 @@ class ClienteDao{
         }
         
     }
-
+    /*Método para listagem de todos os cadastros */
     public function listAll(){
         $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` ORDER BY `nome`;";
 
@@ -113,7 +114,7 @@ class ClienteDao{
 
         return $clientes;
     }
-
+    /*Método para retornar cliente por ID*/
     public function getById($id){
         $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` WHERE `id`= :id;";
 
@@ -123,7 +124,9 @@ class ClienteDao{
         $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, '\App\Cliente');
 
         $cliente = $stmt->fetch();
-
+            /*Persistindo ação de seleção por ID, esta 
+            ação ocorre quando é requisitado um cadastro 
+            para alteração*/
             $acao = "Seleção";
             $dados = "Cliente foi selecionado";
             $log = new LogDao();
@@ -132,7 +135,7 @@ class ClienteDao{
 
         return $cliente;
     }
-
+    /*Método para deleção */
     public function delete($id){
         $sql = "DELETE FROM `app-msg-nvoip`.`cliente` WHERE `id`=:id;";
 
@@ -142,14 +145,14 @@ class ClienteDao{
     if (!$stmt->execute()):
         echo "Ocorreu um erro!";
     else:
+        /*Registro de ação de exclusão*/
         $acao = "Exclusão";
         $dados = "Exclusão de cadastro de cliente";
         $log = new LogDao();
-            
         $log->create($id, $acao, $dados);
     endif;
     }
-
+    /*Método para filtrar por cfp */
     public function listByCpf($cpf){
         $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` WHERE `cpf` LIKE :cpf;";
 
@@ -161,7 +164,7 @@ class ClienteDao{
 
         return $cliente;
     }
-
+    /*Método para filtrar por email */
     public function listByEmail($email){
         $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` WHERE `email` LIKE :email;";
 
@@ -173,7 +176,7 @@ class ClienteDao{
 
         return $cliente;
     }
-
+    /*Método para filtrar por telefone */
     public function listByTelefone($telefone){
         $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` WHERE `telefone` LIKE :telefone;";
 
