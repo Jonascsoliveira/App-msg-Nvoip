@@ -88,12 +88,21 @@ $filtroTelefone = filter_input(INPUT_POST, "filtroTelefone");
                         <div class="col-md-1 border border-top-0"><a href="index.php?excluir=<?=$cliente->getId()?>">Excluir</a></div>
                     </div>
                     <div class="row">
-                        <form action="apisms.php" method="post">
-                            <input type="text" name="msg" id="msg" placeholder="Digite sua mensagem. Atencao sem acentuacao!" required>
-                            <input type="hidden" name="telefone" value="<?=$cliente->getTelefone()?>">
-                            <input type="hidden" name="id" value="<?=$cliente->getId()?>">
-                            <input type="submit" value="Enviar SMS">
-                        </form>
+                        <div class="col-md-2">
+                            <form action="apisms.php" method="post">
+                                <input type="text" name="msg" id="msg" placeholder="Digite sua mensagem. Atencao sem acentuacao!" required>
+                                <input type="hidden" name="telefone" value="<?=$cliente->getTelefone()?>">
+                                <input type="hidden" name="id" value="<?=$cliente->getId()?>">
+                                <input type="submit" value="Enviar SMS">
+                            </form>
+                        </div>
+                        <div class="col-md-3">
+                            <form action="apivoicesms.php" method="post">
+                                <input type="hidden" name="telefone" value="<?=$cliente->getTelefone()?>">
+                                <input type="hidden" name="id" value="<?=$cliente->getId()?>">
+                                <input type="submit" value="Enviar mensagem de voz">
+                            </form>
+                        </div>
                     </div>
                 </div>
             <?php endforeach; ?>
