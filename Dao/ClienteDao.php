@@ -3,7 +3,7 @@
 namespace Dao;
 
 use \App\Conexao;
-//use \App\Cliente;
+
 use PDO;
 
 class ClienteDao{
@@ -48,6 +48,13 @@ class ClienteDao{
 
         if ($stmt->execute()){
             echo "Cliente cadastrado";
+            $ultimoID = $this->conexao->lastInsertId();
+            $acao = "criação";
+            $dados = "criação de novo usuário";
+            $log = new LogDao();
+            
+            $log->create($ultimoID, $acao, $dados);
+
         }else{
             echo "Cliente não cadastrado, houve algum erro!";
         }
@@ -88,13 +95,18 @@ class ClienteDao{
 
         if ($stmt->execute()){
             echo "Alterado com sucesso";
+            $acao = "Alteração";
+            $dados = "Alteração de usuário";
+            $log = new LogDao();            
+            $log->create($id, $acao, $dados);
         }else{
             echo "Cliente não cadastrado, houve algum erro!";
         }
+        
     }
 
     public function listAll(){
-        $sql = "SELECT * FROM `app-msg-nvoip`.`cliente`;";
+        $sql = "SELECT * FROM `app-msg-nvoip`.`cliente` ORDER BY `nome`;";
 
         $stmt = $this->conexao->query($sql);
         $clientes = $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, '\App\Cliente');
@@ -111,6 +123,13 @@ class ClienteDao{
         $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, '\App\Cliente');
 
         $cliente = $stmt->fetch();
+
+            $acao = "Seleção";
+            $dados = "Cliente foi selecionado";
+            $log = new LogDao();
+            
+            $log->create($id, $acao, $dados);
+
         return $cliente;
     }
 
@@ -123,7 +142,11 @@ class ClienteDao{
     if (!$stmt->execute()):
         echo "Ocorreu um erro!";
     else:
-        header('location:index.php');
+        $acao = "Exclusão";
+        $dados = "Exclusão de cadastro de cliente";
+        $log = new LogDao();
+            
+        $log->create($id, $acao, $dados);
     endif;
     }
 

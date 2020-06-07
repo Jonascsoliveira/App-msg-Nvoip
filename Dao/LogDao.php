@@ -15,7 +15,7 @@ class LogDao{
 
     public function create($id_cliente, $acao, $dados){
 
-        $dataAtual = new DateTime();
+        $dataAtual = date('d/m/y H:i:s');
         $sql = "INSERT INTO `app-msg-nvoip`.`log`
         (`id_cliente`, `dataHora`, `acao`, `dados`)
         VALUES(:id_cliente, :dataHora, :acao, :dados);";

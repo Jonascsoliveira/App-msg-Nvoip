@@ -50,6 +50,7 @@ $filtroTelefone = filter_input(INPUT_POST, "filtroTelefone");
     <!--Conteúdo-->
         <div>
             <?php 
+                
                 $daoCliente = new ClienteDao();
                 
                 if(isset($filtroEmail)){
