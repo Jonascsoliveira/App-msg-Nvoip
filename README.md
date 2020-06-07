@@ -4,7 +4,7 @@ App feito com ingração a API da Nvoip para envio de SMS e Voice SMS.
 
 # Atenção!
 
-Para funcionamento correto das funções de envio de mensagem é necessário que haja um certificado válido em seu servidor, seja ele localhost ou remoto. A API da Nvoip requer conexão segura por meio de ([SSL](https://www.hostinger.com.br/tutoriais/o-que-e-ssl-tls-https/)), se estes requisitos forem cumpridos será possível enviar mensagens pela API da Nvoip.
+Para funcionamento correto das funções de envio de mensagem é necessário que haja um certificado válido em seu servidor, seja ele localhost ou remoto. A [API da Nvoip](https://nvoip.docs.apiary.io/) requer conexão segura por meio de [SSL](https://www.hostinger.com.br/tutoriais/o-que-e-ssl-tls-https/), se estes requisitos forem cumpridos será possível enviar mensagens pela API da Nvoip.
 
 ## Objetivo
 
