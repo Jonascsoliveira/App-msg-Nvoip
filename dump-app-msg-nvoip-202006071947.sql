@@ -40,16 +40,6 @@ CREATE TABLE `cliente` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `cliente`
---
-
-LOCK TABLES `cliente` WRITE;
-/*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (10,'Jonas','Carlos Silva Oliveira','jonascsoliveira@gmail.com','09174454447','3608280','Rua: DR Antonio Mourão Guimarães, 151','Santa Cruz','Minas Gerais','Brasil','32988171165','Juiz de Fora');
-/*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `log`
 --
 
