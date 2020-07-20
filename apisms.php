@@ -23,7 +23,7 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, "{
 
 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
     "Content-Type: application/json",
-    "token_auth: 211718131b8d420b13943298bbfb09b71ddd1"
+    "token_auth: token fornecido em conta nvoip"
 ));
 
 $response = curl_exec($ch);
